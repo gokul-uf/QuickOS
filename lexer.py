@@ -1,4 +1,5 @@
 import re
+#import sys
 keyword_list = ['define', 'enddef', 'global', 'scheduler', 'if',
                 'else', 'elseif', 'endif']
 
@@ -26,7 +27,50 @@ def split( ip ):
 
     return ret_val
 
-ip = '''define global():
+def remove_comments( ip ):
+    n = len(ip)
+    i = 0
+    commfree = ""
+    while i<n:
+        if ip[i] == '"':
+            commfree = commfree + ip[i]
+            while ip[i] != '"' and i<n:
+                commfree = commfree + ip[i]
+                i+=1
+            commfree = commfree + ip[i]
+            i +=1
+            continue
+        elif ip[i] == '/' and i+1 <n:
+            if ip[i+1] == '/':
+                i += 1
+                while i<n and ip[i] != '\n':
+                    i+=1
+                i += 1
+                continue
+            elif ip[i+1] == '*':
+                i += 2
+                while i<n:
+                    if ip[i] == '*':
+                        i += 1
+                        if ip[i] == '/':
+                            i += 1
+                            break
+                    i += 1
+                continue
+            else:
+                commfree = commfree + ip[i]
+                i += 1
+                continue
+        else:
+            commfree = commfree + ip[i]
+            i += 1
+    return commfree
+
+#userInput = sys.stdin.readlines()
+#print(remove_comments(userInput))
+
+#ip =
+'''define global():
 int MEM_REQUIRED = 2;
 int MAX_MEMORY = 1024;
 int mem_location = 0;
@@ -41,7 +85,7 @@ proc.assign(mem_location);
 endif
 enddef'''
 
-print(split(ip))
+#print(split(ip))
 
 # input:   a string containing a single statement, with the ending ; and : removed
 # returns: a list removing all white spaces, grouping all sets of only numbers together, grouping alphabets-number combinations, grouping various
@@ -63,5 +107,5 @@ def validate_ops(lexd_stmt) :
 # input:   a list of lexemes corresponding to a statement
 # returns: a list of all identifiers that are not valid
 def validate_ids(lexd_stmt) :
-    return [iden for iden in lexd_stmt if re.match("^\w+$", iden) and not re.match("^\d+$", iden) and not re.match("^[A-Z]([A-Z_]*[A-Z])?$|^[a-z]([a-z_]*[a-z])?$", iden)]
+    return [iden for iden in lexd_stmt if re.match("^\w+$", iden) and not re.match("^\d+$", iden) and not re.match("^ [A-Z]([A-Z_]*[A-Z])? $ | ^ [a-z]([a-z_]*[a-z])? $", iden)]
 
