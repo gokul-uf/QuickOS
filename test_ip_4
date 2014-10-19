@@ -1,0 +1,16 @@
+define global():
+  int mem_required = 0;
+  int MAX_MEMORY = 1024;
+  int mem_location = -1;
+enddef
+
+define mmu(process proc):
+  mem_required = proc.memory;
+  mem_location = memory::get_available_location(4 * mem_required);
+  if (mem_location == -1):
+    schedule::block(proc);
+  else
+    memory::reserve(mem_required, mem_location);
+    proc.assign(mem_location);
+  endif
+enddef
