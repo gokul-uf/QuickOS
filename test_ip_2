@@ -1,0 +1,11 @@
+define global:
+    int UPPER_PID = 1720;
+    int LOWER_PID = 1710;
+enddef
+
+define scheduler(process_list procs):
+    if count(procs.pid < UPPER_PID and procs.pid > LOWER_PID) > 0:
+        schedule::PR(procs.pid < UPPER_PID and procs.pid > LOWER_PID);
+    else
+        schedule::RR(procs);
+    endif
