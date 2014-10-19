@@ -1,14 +1,12 @@
-define global():
-int MEM_REQUIRED = 2;
-int MAX_MEMORY = 1024;
-int mem_location = 0;
+define global:
+  int SHORT_LEN = 20; //to differentiate between a short process and others
+  int MIN_PROCS = 10; //maxm number of processes above which SJF is used
 enddef
-define mmu(process proc):
-mem_location = proc.pid * 2 - 2;
-if (mem_location > MAX_MEMORY - 2):
-schedule::exit(proc);
-else
-memory::reserve(MEM_REQUIRED, mem_location);
-proc.assign(mem_location);
-endif
+
+define scheduler(process_list procs):
+  if count(procs.length < SHORT_LEN) > MIN_PROCS:
+    schedule::SJF(procs);
+  else
+    schedule::RR(procs);
+  endif
 enddef
