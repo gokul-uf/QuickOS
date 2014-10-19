@@ -37,6 +37,8 @@ enddef'''
 
 print(split(ip))
 
+# returns a list removing all white spaces, grouping all sets of only numbers together, grouping alphabets-number combinations, grouping various
+# operator combos together, and taking any other character like ( on its own
 def lexemize(statement):
 
     return re.findall("\s*(\d+|\w[\w_]+|[\+-/\*%\^<>=!:\.]+|.)",statement) #uses regex to split statement into constant integers, identifiers, groups of operators
