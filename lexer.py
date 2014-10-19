@@ -23,12 +23,15 @@ def token_type (input):
         return "Not A token"
 
 #takes a list of tokens, classifies and prints according to different token type
-def token_count (input):
+
+
+#TODO
+'''def token_count (input):
     TokenType = {"keyword":[] ,"datatype": [], "operator":[],"special symbol":[]}
     for i in input:
         temp = token_type(i)
         TokenType[temp] = TokenType[temp] + i
-        
+'''        
 
     
 
