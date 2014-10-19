@@ -7,15 +7,21 @@ dt_list = ['int', 'float', 'bool', 'process', 'process_list', 'timer']
 op_list = ['+', '-', '*', '/', '%', '^', '<', '>',
            '<=', '>=', '==', '!=', '=', '!', 'and', 'or', '::']
 
-specSym_list = ['(', ')', '.', ':', '//', '/*', '*/', ';']
+spec_sym_list = ['(', ')', '.', ':', '//', '/*', '*/', ';']
 
 
 def split( ip ):
 
     temp = ip.split('\n')   #splits on basis of line
-    ret_val = []
+
+    temp2 = []
     
     for i in temp:
+        temp2 = temp2 + i.split(':') #splits on basis of :
+    
+    ret_val = []
+    
+    for i in temp2:
         ret_val = ret_val + i.split(';') #splits on basis of ;
 
     return ret_val
@@ -37,10 +43,25 @@ enddef'''
 
 print(split(ip))
 
+# input:   a string containing a single statement, with the ending ; and : removed
+# returns: a list removing all white spaces, grouping all sets of only numbers together, grouping alphabets-number combinations, grouping various
+#          operator combos together, and taking any other character like ( on its own
 def lexemize(statement):
 '''
     returns a list removing all white spaces, grouping all sets of 
     only numbers together, grouping alphabets-number combinations, grouping various
     operator combos together, and taking any other character like ( on its own
 '''
-    return re.findall("\s*(\d+|\w[\w_]+|[\+-/\*%\^<>=!:\.]+|.)",statement) 
+    return re.findall("\s*(\w+|[\+-/\*%\^<>=!:\.]+|.)",statement)
+
+# input:   a list of lexemes corresponding to a statement
+# returns: a list of all symbols that don't form valid operators
+def validate_ops(lexd_stmt) :
+    return [op for op in lexd_stmt if (op not in op_list and op not in spec_sym_list and not re.match("^[\w_]*$", op))]
+
+
+# input:   a list of lexemes corresponding to a statement
+# returns: a list of all identifiers that are not valid
+def validate_ids(lexd_stmt) :
+    return [iden for iden in lexd_stmt if re.match("^\w+$", iden) and not re.match("^\d+$", iden) and not re.match("^[A-Z]([A-Z_]*[A-Z])?$|^[a-z]([a-z_]*[a-z])?$", iden)]
+
