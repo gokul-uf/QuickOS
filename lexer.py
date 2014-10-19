@@ -51,6 +51,48 @@ def split( ip ):
 
     return ret_val
 
+def remove_comments( ip ):
+    n = len(ip)
+    i = 0
+    commfree = ""
+    while i<n:
+        if ip[i] == '"':
+            commfree = commfree + ip[i]
+            while ip[i] != '"' and i<n:
+                commfree = commfree + ip[i]
+                i+=1
+            commfree = commfree + ip[i]
+            i +=1
+            continue
+        elif ip[i] == '/' and i+1 <n:
+            if ip[i+1] == '/':
+                i += 1
+                while i<n and ip[i] != '\n':
+                    i+=1
+                i += 1
+                continue
+            elif ip[i+1] == '*':
+                i += 2
+                while i<n:
+                    if ip[i] == '*':
+                        i += 1
+                        if ip[i] == '/':
+                            i += 1
+                            break
+                    i += 1
+                continue
+            else:
+                commfree = commfree + ip[i]
+                i += 1
+                continue
+        else:
+            commfree = commfree + ip[i]
+            i += 1
+    return commfree
+
+#userInput = sys.stdin.readlines()
+#print(remove_comments(userInput))
+
 # input:   a string containing a single statement, with the ending ; and : removed
 # returns: a list removing all white spaces, grouping all sets of only numbers together, grouping alphabets-number combinations, grouping various
 #          operator combos together, and taking any other character like ( on its own
