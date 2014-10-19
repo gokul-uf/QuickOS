@@ -17,21 +17,26 @@ def token_type (input):
         return "datatype"
     elif input in op_list:
         return "operator"
-    elif input in specSym_list:
+    elif input in spec_sym_list:
         return "special symbol"
     else:
         return "Not A token"
 
+
+
 #takes a list of tokens, classifies and prints according to different token type
-
-
-#TODO
-'''def token_count (input):
-    TokenType = {"keyword":[] ,"datatype": [], "operator":[],"special symbol":[]}
+#input : set of identified tokens
+#output: Nothing, classifies tokens as keyword, datatype.etc and prints them
+def token_count (input):
+    TokenType = {"keyword":set() ,"datatype": set(), "operator":set(),"special symbol":set()}
+    
     for i in input:
         temp = token_type(i)
-        TokenType[temp] = TokenType[temp] + i
-'''        
+        if not temp == 'Not A token':
+            TokenType[temp].add(i)
+	
+    for i in TokenType:
+        print i,TokenType[i]
 
     
 
@@ -126,3 +131,4 @@ endif
 enddef'''
 
 print(split(ip))
+token_count(split(ip))
