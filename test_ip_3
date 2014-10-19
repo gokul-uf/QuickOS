@@ -1,0 +1,18 @@
+define global:
+  int IO_TIME = 5000;
+  int run_num = 0;
+  timer t;
+  t.start();
+enddef
+
+define scheduler(process_list procs):
+  if (t.elapsed() > IO_TIME):
+    t.restart();
+    run_num = run_num + 1;
+  endif
+  if run_num % 2 == 0:
+    schedule::SJF(procs.hasIO);
+  else
+    schedule::PR(!procs.hasIO);
+  endif
+enddef
