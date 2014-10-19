@@ -28,6 +28,7 @@ def token_count (input):
     for i in input:
         temp = token_type(i)
         TokenType[temp] = TokenType[temp] + i
+        
 
     
 
