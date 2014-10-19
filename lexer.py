@@ -36,3 +36,7 @@ endif
 enddef'''
 
 print(split(ip))
+
+def lexemize(statement):
+
+    return re.findall("\s*(\d+|\w[\w_]+|[\+-/\*%\^<>=!:\.]+|.)",statement) #uses regex to split statement into constant integers, identifiers, groups of operators
