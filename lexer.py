@@ -184,7 +184,7 @@ def isFuncCall(input):
     if input[0] == ["memory"] and input[1] == ["::"] and validate_ids(input[2]) == [] and input[3] == ['('] and input[-1] == [')']:
         if(isValidArgList(input[4:-1])):
             return True
-        else:
+       else:
             return False
 		
     if input[0] == ["schedule"] and input[1] == ["::"] and validate_ids(input[2]) == [] and input[3] == ['('] and input[-1] == [')']:
