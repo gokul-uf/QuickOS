@@ -218,7 +218,77 @@ def isValidArgList(input):
 		return True
 	else:
 		return False
-		
+
+#Function to check if input is a valid logical expression
+#Input: list of logical expression
+#Output: True or False
+def isValidLogicalExpr(input):
+    not_e = False
+    or_e = False
+    and_e = False
+    for i in input:
+        if i == "not":
+            not_e = True
+        elif i ==  "and":
+            if not_e or or_e or and_e:
+                print("Invalid Expression: " + " ".join(input))
+                return False
+            and_e = True
+        elif i == "or":
+            if not_e or and_e or or_e:
+                print("Invalid Expression: " + " ".join(input))
+                return False
+            or_e = True
+        else:
+            and_e = False
+            or_e = False
+            not_e = False
+    return True
+
+#Function to check if input is a valid statement block
+#Input: list of statements
+#Output: True if the statement block is lexically valid, False otherwise
+def isValidStatementBlock(input):
+    return True
+
+#Function to check if input 'if's are valid
+#Input: list of lexems that start with an if and end with an endif
+#Output: True if the input is lexically valid, False otherwise
+def isValidIfStatement(input):
+    body = []
+    if input[0][0] != "if" or input[0][1] != "(":
+        print ("Improper if syntax: " + " ".join(input[0]))
+        return False
+    open_br = True
+    expr_list = []
+    
+    for  i in input[0][2:]:
+        if open_br:
+            if i == ")":
+                open_br = False
+                if not isValidLogicalExpr(expr_list):
+                    print ("Improper argument list: (" + " ".join(expr_list) + ")")
+                expr_list = []
+                continue
+            else:
+                expr_list += i
+                continue
+
+    stmts = []
+    for i in input[1:]:
+        if i[0] != "elseif" and i[0] != "else" and i[0] != "endif":
+            stmts += i
+        else:
+            isValidStatementBlock(stmts)
+            stmts = []
+            if i[0] == "elseif":
+                if i[1] != "(":
+                    print ("Improper elseif syntax- missing (: " + " ".join(i[0]))
+                else:
+                    if not isValidLogicalExpr(i[2:-1]):
+                        print ("Improper argument list: (" + " ".join(i[2:-1]) + ")")
+    return True                  
+	    
 #Function to check if input list is a valid function call
 def isFuncCall(input):
     if validate_ids(input[0]) == [] and input[1] == ["."] and validate_ids(input[2]) == [] and input[3] == ['('] and input[-1] == [')']:
