@@ -87,6 +87,14 @@ def split( ip ):
     n = len(ip)
     i = 0
     temp2 = ""
+
+    semicol = ip.split('\n')
+    for i in semicol:
+        if not re.match(".*[;:]\s*$", i) and i and not re.match("^.*\s*enddef\s*$",i) and not re.match("^.*\s*endif\s*$",i) and not re.match("^.*\s*else\s*$",i):
+            print("Missing ; or : in line: " + i)        
+
+    i = 0
+    
     # converts : to \n for splitting on basis of :,
     # and ensuring that :: are not removed
     while i<n:
@@ -169,7 +177,7 @@ def lexemize(statement):
 #input:   a list of lexemes corresponding to a statement
 #output: a list of all symbols that don't form valid operators
 def validate_ops(lexd_stmt) :
-	return [op for op in lexd_stmt if (op not in op_list and op not in spec_sym_list and not re.match("^[\w_]*$", op))]
+    return [op for op in lexd_stmt if (op not in op_list and op not in spec_sym_list and not re.match("^[\w_]*$", op))]
 
 #Checks if any of the input lexemes are not valid identifiers
 #input:   a list of lexemes corresponding to a statement
@@ -188,6 +196,7 @@ def validate_ids(lexd_stmt) :
                 inv_id += [iden]
         i += 1
     return inv_id
+
     
 #function to compare two lists	
 #input: two lists
@@ -200,6 +209,7 @@ def comp ( a,b ):
 			return False
 	return True
 	
+
 #Function to check if input list is a valid variable declaration
 #input: list of list containing lexemes
 #output: True or False
