@@ -10,6 +10,8 @@ op_list = ['+', '-', '*', '/', '%', '^', '<', '>',
 
 spec_sym_list = ['(', ')', '.', ':', '//', '/*', '*/', ';']
 
+
+
 #classifies each token into a token type
 #input: a token
 #output: A string with token type
@@ -110,6 +112,16 @@ def lexemize(statement):
 # input:   a list of lexemes corresponding to a statement
 # returns: a list of all symbols that don't form valid operators
 def validate_ops(lexd_stmt) :
+    #i = 0
+    #invalid_ops = []
+    #for line_op in lexd_stmt:
+    #    i+= 1
+    #    j = 1
+    #    for op in line_op:
+    #        if (op not in op_list and op not in spec_sym_list and not re.match("^[\w_]*$", op)):
+    #            invalid_ops += [(op,i,j)]
+    #        j += len(op)
+    #return invalid_ops
     return [op for op in lexd_stmt if (op not in op_list and op not in spec_sym_list and not re.match("^[\w_]*$", op))]
 
 
@@ -118,7 +130,47 @@ def validate_ops(lexd_stmt) :
 def validate_ids(lexd_stmt) :
     return [iden for iden in lexd_stmt if re.match("^\w+$", iden) and not re.match("^\d+$", iden) and not re.match("^[A-Z]([A-Z_]*[A-Z])?$|^[a-z]([a-z_]*[a-z])?$", iden)]
 
-ip = '''define global():
+
+
+if __name__ == "__main__":
+    filename = raw_input("Enter a file name: ")
+    f = open(filename, 'r')
+    code = f.read()
+    cfree = remove_comments(code)
+    sp = split(cfree)
+    lex = []
+
+    print('')
+    print('')
+    print('           Lexemes')
+    print('           -------')
+    print('')
+
+    lex_str = ""
+    for i in sp:
+        if i: 
+            lex += lexemize(i)
+            lex_str += str(lexemize(i))[1:-1]
+            lex_str += ", "
+    print(lex_str)[:-2]
+            
+    #print(lex)
+    #print(len(lex))
+
+    inv_op = validate_ops(lex)
+    if len(inv_op) > 0:
+        print('Invalid ops detected: ' + str(inv_op)[1:-1])
+    else:
+        printf('All ops are valid')
+
+    inv_id = validate_ids(lex)
+    if len(inv_id) >0:
+        print('Invalid identifiers detected: ' + str(inv_id)[1:-1])
+    else:
+        printf('All identifiers are valid')
+
+#ip =
+'''define global():
 int MEM_REQUIRED = 2;
 int MAX_MEMORY = 1024;
 int mem_location = 0;
@@ -133,5 +185,5 @@ proc.assign(mem_location);
 endif
 enddef'''
 
-print(split(ip))
-token_count(split(ip))
+#print(split(ip))
+#token_count(split(ip))
