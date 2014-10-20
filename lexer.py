@@ -146,8 +146,7 @@ def comp ( a,b ):
 			return False
 	return True
 	
-#function to verify if the global fn has been defined properly
-#input: A list of list of lexemes, one list per lexemes of each line
+
 '''
 <global> -> define global(): <var_decls><fn_calls> enddef
 <var_decls> -> <var_decl><var_decls> | e
@@ -155,15 +154,50 @@ def comp ( a,b ):
 <data_type> -> int, float, bool, process, process_list, timer 
 <initializn> -> = const | e
 <fn_calls> -> <fn_call><fn_calls> | e
-<fn_call> -> id . id ();
+<fn_call> -> id . id (<arg_list); | memory :: id(<arg_list>); | schedule :: id(<arg_list>);
 '''
 
-#TODO
+#Function to check if input list is a valid variable declaration
 def isVardecl(input):
-	pass
-def isFuncCall(input):
-	pass
+	if input[0] in dt_list and validate_ids(input[1]) == [] and input[2] == '=' :
+		return True
+	return False
 
+#Function to check if input is a valid list of arguments
+#Input: list of arguments, possibly with ','
+#Output: True or False	
+def isValidArgList(input):
+	temp = [x for x in input if x != [',']]
+	if(validate_ids(temp) == []):
+		return True
+	else:
+		return False
+		
+#Function to check if input list is a valid function call
+def isFuncCall(input):
+    if validate_ids(input[0]) == [] and input[1] == ["."] and validate_ids(input[2]) == [] and input[3] == ['('] and input[-1] == [')']:
+        if(isValidArgList(input[4:-1])):
+            return True
+        else:
+            return False
+            
+    if input[0] == ["memory"] and input[1] == ["::"] and validate_ids(input[2]) == [] and input[3] == ['('] and input[-1] == [')']:
+        if(isValidArgList(input[4:-1])):
+            return True
+        else:
+            return False
+		
+    if input[0] == ["schedule"] and input[1] == ["::"] and validate_ids(input[2]) == [] and input[3] == ['('] and input[-1] == [')']:
+        if(isValidArgList(input[4:-1])):
+            return True
+        else:
+            return False
+	
+    return False
+
+#Function to verify if the global fn has been defined properly
+#input: A list of list of lexemes, one list per lexemes of each line
+#output: True/False
 def verify_global(ip):
 	global_header = ["define","global","(",")"]
 	if comp(global_header,ip[0]) == False:	
