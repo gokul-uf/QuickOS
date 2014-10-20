@@ -34,8 +34,10 @@ def isValidArith(input):
         flag = 0
         for i in input[1:-1]:
             if flag == 0 and i not in op_list:
+                print("Invalid arithmetic expression: " + " ".join(input))
                 return False
             elif flag == 1 and i in op_list:
+                print("Invalid arithmetic expression: " + " ".join(input))
                 return False
             else:
                 if flag == 0:
@@ -43,6 +45,7 @@ def isValidArith(input):
                 else:
                     flag = 0
         return True
+    print("Invalid arithmetic expression: " + " ".join(input))
     return False			
 
 #function to identify if input is a valid assignment statement
@@ -54,6 +57,7 @@ def isValidAssign(input):
             return True
         elif isValidArith(input[2:]):
             return True
+    print("Invalid assignment statement: " + " ".join(input))
     return False
 
 
@@ -166,6 +170,7 @@ def remove_comments( ip ):
             commfree = commfree + ip[i]
             i += 1
     return commfree
+
 #converts the input string into lexemes
 #input:   a string containing a single statement, with the ending ; and : removed
 #output: a list removing all white spaces, grouping all sets of only numbers together, grouping alphabets-number combinations, grouping various
@@ -216,6 +221,7 @@ def comp ( a,b ):
 def isVardecl(input):
 	if input[0] in dt_list and validate_ids(input[1]) == [] and input[2] == '=' :
 		return True
+	print("Invalid variable declaration: " + " ".join(input))
 	return False
 
 #Function to check if input is a valid list of arguments
@@ -226,6 +232,7 @@ def isValidArgList(input):
 	if(validate_ids(temp) == []):
 		return True
 	else:
+		print("Invalid argument list: " + " ".join(input))
 		return False
 
 #Function to check if input is a valid logical expression
@@ -293,15 +300,22 @@ def isValidStatementBlock(input):
 #Output: True if the input is lexically valid, False otherwise
 def isValidIfStatement(input):
     body = []
-    if input[0][0] != "if" or input[0][1] != "(":
+    if input[0][0] != "if":
         print ("Improper if syntax: " + " ".join(input[0]))
         return False
     open_br = True
     expr_list = []
+
+    if input[0][1] == "(":
+        j = 2
+    else:
+        j = 1
     
-    for  i in input[0][2:]:
+    for  i in input[0][j:]:
         if open_br:
-            if i == ")":
+            if i == ")" or i == input[0][-1]:
+                if i == input[0][-1] and i != ")":
+                    expr_list += [i]
                 open_br = False
                 if not isValidLogicalExpr(expr_list):
                     return False
@@ -319,11 +333,19 @@ def isValidIfStatement(input):
             isValidStatementBlock(stmts)
             stmts = []
             if i[0] == "elseif":
-                if i[1] != "(":
-                    print ("Improper elseif syntax- missing (: " + " ".join(i[0]))
-                else:
+                if i[1] == "(":
+                    if i[-1] != ")":
+                        print ("Improper elseif syntax- missing ): " + " ".join(i[0]))
                     if not isValidLogicalExpr(i[2:-1]):
                         print ("Improper argument list: (" + " ".join(i[2:-1]) + ")")
+                else:
+                    if i[-1] == ")":
+                        print ("Improper elseif syntax- missing (: " + " ".join(i[0]))
+                        if not isValidLogicalExpr(i[2:-1]):
+                            print ("Improper argument list: (" + " ".join(i[2:-1]) + ")")
+                    else:
+                        if not isValidLogicalExpr(i[1:]):
+                            print ("Improper argument list: (" + " ".join(i[2:-1]) + ")")
     return True                  
 	    
 #Function to check if input list is a valid function call
