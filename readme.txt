@@ -54,6 +54,9 @@ Lexical rules
 <b_opern> ->  <base_id> ^ <b_opern> | <base_id>
 <base_id> -> id | <intliteral> | <floatliteral> | <boolliteral> | <fn_call>
 
+<condition> -> if (<bool_exp>): <body> <condition_expanded> endif
+<condition_expanded> -> elseif (<bool_exp>): <body> <condition_expanded> | <condition_else>
+<condition_else> -> else: <body> | e
 Code Status
 ===========
 Complete 
