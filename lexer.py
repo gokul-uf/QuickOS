@@ -40,9 +40,21 @@ def token_type (input):
 #Input: list of list of lexemes
 #Output: True or False
 def isValidArith(input):
-    pass	
-	
-	
+    if input[-1] not in op_list and input[0] not in op_list:
+        flag = 0
+        for i in input[1:-1]:
+            if flag == 0 and i not in op_list:
+                return False
+            elif flag == 1 and i in op_list:
+                return False
+            else:
+                if flag == 0:
+                    flag = 1
+                else:
+                    flag = 0
+        return True
+    return False			
+
 #Function to identify if input is a valid assignment statement
 #Input: list of list of lexemes
 #Output: True or False
