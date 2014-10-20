@@ -1,4 +1,5 @@
 import re
+
 keyword_list = ['define', 'enddef', 'global', 'scheduler', 'if',
                 'else', 'elseif', 'endif']
 
@@ -10,6 +11,8 @@ op_list = ['+', '-', '*', '/', '%', '^', '<', '>',
 spec_sym_list = ['(', ')', '.', ':', '//', '/*', '*/', ';']
 
 #classifies each token into a token type
+#input: a token
+#output: A string with token type
 def token_type (input):
     if input in keyword_list:
         return "keyword"
@@ -24,7 +27,7 @@ def token_type (input):
 
 
 
-#takes a list of tokens, classifies and prints according to different token type
+#takes a list of lexemes, classifies and prints according to different token type
 #input : set of identified tokens
 #output: Nothing, classifies tokens as keyword, datatype.etc and prints them
 def token_count (input):
