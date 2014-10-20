@@ -238,17 +238,23 @@ def isValidLogicalExpr(input):
     not_e = False
     or_e = False
     and_e = False
+    if input[0] == "and" or input[0] == "or":
+        print("Invalid Relational Expression: " + " ".join(input))
+        return False
+    if input[-1] == "and" or input[-1] == "or":
+        print("Invalid Relational Expression: " + " ".join(input))
+        return False
     for i in input:
         if i == "not":
             not_e = True
         elif i ==  "and":
             if not_e or or_e or and_e:
-                print("Invalid Expression: " + " ".join(input))
+                print("Invalid Relational Expression: " + " ".join(input))
                 return False
             and_e = True
         elif i == "or":
             if not_e or and_e or or_e:
-                print("Invalid Expression: " + " ".join(input))
+                print("Invalid Relational Expression: " + " ".join(input))
                 return False
             or_e = True
         else:
@@ -279,11 +285,11 @@ def isValidIfStatement(input):
             if i == ")":
                 open_br = False
                 if not isValidLogicalExpr(expr_list):
-                    print ("Improper argument list: (" + " ".join(expr_list) + ")")
+                    return False
                 expr_list = []
                 continue
             else:
-                expr_list += i
+                expr_list += [i]
                 continue
 
     stmts = []
