@@ -53,16 +53,36 @@ def token_count (input):
 
 #function to split input on basis of newline and ; delimiter
 def split( ip ):
-    temp = ip.split('\n')   #splits on basis of line
 
-    temp2 = []
-    
-    for i in temp:
-        temp2 = temp2 + i.split(':') #splits on basis of :
-    
+    n = len(ip)
+    i = 0
+    temp2 = ""
+    # converts : to \n for splitting on basis of :,
+    # and ensuring that :: are not removed
+    while i<n:
+        if ip[i] == ':':
+            if i + 1<n:
+                if ip[i + 1] != ':':
+                    if i - 1 >= 0:
+                        if ip[i - 1] != ':':
+                            temp2 += '\n'
+                        else:
+                            temp2 += ip[i]
+                    else:
+                        temp2 += ip[i]
+                else:
+                     temp2 += ip[i]   
+            else:
+                temp2 += '\n'
+        else:
+            temp2 += ip[i]
+        i += 1        
+
+    temp = temp2.split('\n')   #splits on basis of line
+          
     ret_val = []
     
-    for i in temp2:
+    for i in temp:
         ret_val = ret_val + i.split(';') #splits on basis of ;
 
     return ret_val
@@ -134,7 +154,20 @@ def validate_ops(lexd_stmt) :
 # input:   a list of lexemes corresponding to a statement
 # returns: a list of all identifiers that are not valid
 def validate_ids(lexd_stmt) :
-    return [iden for iden in lexd_stmt if re.match("^\w+$", iden) and not re.match("^\d+$", iden) and not re.match("^[A-Z]([A-Z_]*[A-Z])?$|^[a-z]([a-z_]*[a-z])?$", iden)]
+    inv_id = []
+    n = len(lexd_stmt)
+    i = 0
+    while i < n:
+        iden = lexd_stmt[i]
+        if re.match("^\w+$", iden) and not re.match("^\d+$", iden) and not re.match("^[A-Z]([A-Z_]*[A-Z])?$|^[a-z]([a-z_]*[a-z])?$", iden):
+            if i + 1 < n:
+                if lexd_stmt[i+1] != ")":
+                    inv_id += [iden]
+            else:
+                inv_id += [iden]
+        i += 1
+    return inv_id
+    #return [iden for iden in lexd_stmt if re.match("^\w+$", iden) and not re.match("^\d+$", iden) and not re.match("^[A-Z]([A-Z_]*[A-Z])?$|^[a-z]([a-z_]*[a-z])?$", iden)]
 
 
 #function to compare two lists	

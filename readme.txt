@@ -9,7 +9,7 @@ Lexical rules:
 <data_type> -> int, float, bool, process, process_list, timer 
 <initializn> -> = const | e
 <fn_calls> -> <fn_call><fn_calls> | e
-<fn_call> -> id . id (<arg_list); | memory :: id(<arg_list>); | schedule :: id(<arg_list>);
+<fn_call> -> id . id (<arg_list>); | memory :: id(<arg_list>); | schedule :: id(<arg_list>);
 <arg_list> -> <arg_list2> | e
 <arg_list2> -> id, | <fn_call>, | id | <fn_call>
 
