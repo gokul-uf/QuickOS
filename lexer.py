@@ -8,7 +8,7 @@ dt_list = ['int', 'float', 'bool', 'process', 'process_list', 'timer']
 op_list = ['+', '-', '*', '/', '%', '^', '<', '>',
            '<=', '>=', '==', '!=', '=', '!', 'and', 'or', '::']
 
-spec_sym_list = ['(', ')', '.', ':', '//', '/*', '*/', ';']
+spec_sym_list = ['(', ')', '.', ':', '//', '/*', '*/', ';',',']
 
 
 
@@ -33,17 +33,23 @@ def token_type (input):
 #input : set of identified tokens
 #output: Nothing, classifies tokens as keyword, datatype.etc and prints them
 def token_count (input):
-    TokenType = {"keyword":set() ,"datatype": set(), "operator":set(),"special symbol":set()}
+    TokenType = {"keyword":set() ,"datatype": set(), "operator":set(),"special symbol":set(),"identifier":set()}
     
     for i in input:
         temp = token_type(i)
         if not temp == 'Not A token':
             TokenType[temp].add(i)
-	
-    for i in TokenType:
-        print i,TokenType[i]
+        else:
+            TokenType["identifier"].add(i)
 
-    
+    temp_str = ''
+    for i in TokenType:
+        temp_str = ''
+        print i+'s'
+        for j in TokenType[i]:
+            temp_str = temp_str + '   ' + j
+        print temp_str,'\n'
+        
 
 #function to split input on basis of newline and ; delimiter
 def split( ip ):
@@ -151,6 +157,8 @@ def comp ( a,b ):
 <fn_calls> -> <fn_call><fn_calls> | e
 <fn_call> -> id . id ();
 '''
+
+#TODO
 def isVardecl(input):
 	pass
 def isFuncCall(input):
@@ -177,7 +185,7 @@ if __name__ == "__main__":
 
     print('')
     print('')
-    print('           Lexemes')
+    print('           All Lexemes')
     print('           -------')
     print('')
 
@@ -188,7 +196,13 @@ if __name__ == "__main__":
             lex_str += str(lexemize(i))[1:-1]
             lex_str += ", "
     print(lex_str)[:-2]
-            
+    print('')
+    print('')
+    print('           Lexemes by Category')
+    print('           -------')
+    print('')
+
+    token_count(lex)       
     #print(lex)
     #print(len(lex))
 
