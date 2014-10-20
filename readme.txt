@@ -1,5 +1,33 @@
-Lexical rules:
+README
+======
+<note>Please do!! :) </note>
 
+The code to be run is lexer.py.
+once started, this will ask for test input file name.
+
+* Give one of the file name mentioned in the "Input Test Files" section
+
+* It will output the following:
+	$ List of Lexemes identified in the code.
+	$ Category wise list of lexemes.
+	$ Whether any Invalid operators are detected
+	$ Whether any Invalid identifiers are detected
+	
+Input Test Files
+================
+There are five test files in total provided with the code. 
+The input test files are present in the same directory as the code.
+
+Files:
+------
+	* test_ip_1
+	* test_ip_2
+	* test_ip_3
+	* test_ip_4
+	* test_ip_5
+	
+Lexical rules
+=============
 <program> -> <global><main>
 <main> -> <scheduler> | <mmu>
 
@@ -25,3 +53,7 @@ Lexical rules:
              <a_opern> % <b_opern> | <b_opern>
 <b_opern> ->  <base_id> ^ <b_opern> | <base_id>
 <base_id> -> id | <intliteral> | <floatliteral> | <boolliteral> | <fn_call>
+
+Code Status
+===========
+Complete 
