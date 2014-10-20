@@ -11,7 +11,6 @@ op_list = ['+', '-', '*', '/', '%', '^', '<', '>',
 spec_sym_list = ['(', ')', '.', ':', '//', '/*', '*/', ';',',']
 
 
-
 #classifies each token into a token type
 #input: a token
 #output: A string with token type
@@ -26,7 +25,34 @@ def token_type (input):
         return "special symbol"
     else:
         return "Not A token"
-
+'''
+<assignment> -> id = <opern>; | id = <fn_call>
+<fn_call> -> id . id (<arg_list>); | memory :: id(<arg_list>); | schedule :: id(<arg_list>);
+<arg_list> -> <arg_list2> | e
+<arg_list2> -> id, | <fn_call>, | id | <fn_call>
+<opern> -> <opern> + <a_opern> | <opern> - <a_opern> | <a_opern> 
+<a_opern> -> <a_opern> * <b_opern> | <a_opern> / <b_opern> | 
+             <a_opern> % <b_opern> | <b_opern>
+<b_opern> ->  <base_id> ^ <b_opern> | <base_id>
+<base_id> -> id | <intliteral> | <floatliteral> | <boolliteral> | <fn_call>
+'''
+#Function to identify if input is a valid arithmetic expression
+#Input: list of list of lexemes
+#Output: True or False
+def isValidArith(input):
+    pass	
+	
+	
+#Function to identify if input is a valid assignment statement
+#Input: list of list of lexemes
+#Output: True or False
+def isValidAssign(input):
+    if validate_ids(input[0]) == [] and input[1] == '=' :
+        if isFuncCall(input[2:]):
+            return True
+        elif isValidArith(input[2:]):
+            return True
+    return False
 
 
 #takes a list of lexemes, classifies and prints according to different token type
@@ -167,9 +193,7 @@ def validate_ids(lexd_stmt) :
                 inv_id += [iden]
         i += 1
     return inv_id
-    #return [iden for iden in lexd_stmt if re.match("^\w+$", iden) and not re.match("^\d+$", iden) and not re.match("^[A-Z]([A-Z_]*[A-Z])?$|^[a-z]([a-z_]*[a-z])?$", iden)]
-
-
+    
 #function to compare two lists	
 def comp ( a,b ):
 	if len(a) != len(b):
@@ -179,17 +203,6 @@ def comp ( a,b ):
 			return False
 	return True
 	
-
-'''
-<global> -> define global(): <var_decls><fn_calls> enddef
-<var_decls> -> <var_decl><var_decls> | e
-<var_decl> -> <data_type> id <initializn>;
-<data_type> -> int, float, bool, process, process_list, timer 
-<initializn> -> = const | e
-<fn_calls> -> <fn_call><fn_calls> | e
-<fn_call> -> id . id (<arg_list); | memory :: id(<arg_list>); | schedule :: id(<arg_list>);
-'''
-
 #Function to check if input list is a valid variable declaration
 def isVardecl(input):
 	if input[0] in dt_list and validate_ids(input[1]) == [] and input[2] == '=' :
@@ -285,21 +298,4 @@ if __name__ == "__main__":
     else:
         print('All identifiers are valid')
 
-#ip =
-'''define global():
-int MEM_REQUIRED = 2;
-int MAX_MEMORY = 1024;
-int mem_location = 0;
-enddef
-define mmu(process proc):
-mem_location = proc.pid * 2 - 2;
-if (mem_location > MAX_MEMORY - 2):
-schedule::exit(proc);
-else
-memory::reserve(MEM_REQUIRED, mem_location);
-proc.assign(mem_location);
-endif
-enddef'''
 
-#print(split(ip))
-#token_count(split(ip))
