@@ -131,6 +131,41 @@ def validate_ids(lexd_stmt) :
     return [iden for iden in lexd_stmt if re.match("^\w+$", iden) and not re.match("^\d+$", iden) and not re.match("^[A-Z]([A-Z_]*[A-Z])?$|^[a-z]([a-z_]*[a-z])?$", iden)]
 
 
+#function to compare two lists	
+def comp ( a,b ):
+	if len(a) != len(b):
+		return False
+	for i in range(0,len(b)):
+		if a[i] != b[i]:
+			return False
+	return True
+	
+#function to verify if the global fn has been defined properly
+#input: A list of list of lexemes, one list per lexemes of each line
+'''
+<global> -> define global(): <var_decls><fn_calls> enddef
+<var_decls> -> <var_decl><var_decls> | e
+<var_decl> -> <data_type> id <initializn>;
+<data_type> -> int, float, bool, process, process_list, timer 
+<initializn> -> = const | e
+<fn_calls> -> <fn_call><fn_calls> | e
+<fn_call> -> id . id ();
+'''
+def isVardecl(input):
+	pass
+def isFuncCall(input):
+	pass
+
+def verify_global(ip):
+	global_header = ["define","global","(",")"]
+	if comp(global_header,ip[0]) == False:	
+		return False
+	i = 1
+	while(cmp(ip[i],["enddef"]) == False):
+		if(isVardecl(ip[i]) or isFuncCall(ip[i])) == False:
+			return False
+		i = i+1
+	return True
 
 if __name__ == "__main__":
     filename = raw_input("Enter a file name: ")
