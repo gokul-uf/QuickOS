@@ -196,13 +196,13 @@ if __name__ == "__main__":
     if len(inv_op) > 0:
         print('Invalid ops detected: ' + str(inv_op)[1:-1])
     else:
-        printf('All ops are valid')
+        print('All ops are valid')
 
     inv_id = validate_ids(lex)
     if len(inv_id) >0:
         print('Invalid identifiers detected: ' + str(inv_id)[1:-1])
     else:
-        printf('All identifiers are valid')
+        print('All identifiers are valid')
 
 #ip =
 '''define global():
