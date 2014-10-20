@@ -52,7 +52,14 @@ Lexical rules
 <a_opern> -> <a_opern> * <b_opern> | <a_opern> / <b_opern> | 
              <a_opern> % <b_opern> | <b_opern>
 <b_opern> ->  <base_id> ^ <b_opern> | <base_id>
-<base_id> -> id | <intliteral> | <floatliteral> | <boolliteral> | <fn_call>
+<base_id> -> id | <intliteral> | <floatliteral> | <fn_call>
+
+<condition> -> if (<bool_exp>): <body> <condition_expanded> endif
+<condition_expanded> -> elseif (<bool_exp>): <body> <condition_expanded> | <condition_else>
+<condition_else> -> else: <body> | e
+<bool_exp> -> <bool_exp> or <bool_exp_and> | <bool_exp_and>
+<bool_exp_and> -> <bool_exp_and> and <bool_exp_not> | <bool_exp_not>
+<bool_exp_not> -> not <bool_exp_not> | id | <boolliteral>
 
 Code Status
 ===========
