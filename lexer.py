@@ -25,20 +25,10 @@ def token_type (input):
         return "special symbol"
     else:
         return "Not A token"
-'''
-<assignment> -> id = <opern>; | id = <fn_call>
-<fn_call> -> id . id (<arg_list>); | memory :: id(<arg_list>); | schedule :: id(<arg_list>);
-<arg_list> -> <arg_list2> | e
-<arg_list2> -> id, | <fn_call>, | id | <fn_call>
-<opern> -> <opern> + <a_opern> | <opern> - <a_opern> | <a_opern> 
-<a_opern> -> <a_opern> * <b_opern> | <a_opern> / <b_opern> | 
-             <a_opern> % <b_opern> | <b_opern>
-<b_opern> ->  <base_id> ^ <b_opern> | <base_id>
-<base_id> -> id | <intliteral> | <floatliteral> | <boolliteral> | <fn_call>
-'''
-#Function to identify if input is a valid arithmetic expression
-#Input: list of list of lexemes
-#Output: True or False
+
+#function to identify if input is a valid arithmetic expression
+#input: list of list of lexemes
+#output: True or False
 def isValidArith(input):
     if input[-1] not in op_list and input[0] not in op_list:
         flag = 0
@@ -55,9 +45,9 @@ def isValidArith(input):
         return True
     return False			
 
-#Function to identify if input is a valid assignment statement
-#Input: list of list of lexemes
-#Output: True or False
+#function to identify if input is a valid assignment statement
+#input: list of list of lexemes
+#output: True or False
 def isValidAssign(input):
     if validate_ids(input[0]) == [] and input[1] == '=' :
         if isFuncCall(input[2:]):
@@ -83,13 +73,15 @@ def token_count (input):
     temp_str = ''
     for i in TokenType:
         temp_str = ''
-        print i+'s'
+        print (i+'s')
         for j in TokenType[i]:
             temp_str = temp_str + '   ' + j
-        print temp_str,'\n'
+        print (temp_str,'\n')
         
 
 #function to split input on basis of newline and ; delimiter
+#input: A string, the program without comments
+#output: list of lists with lexemes in each line and statement
 def split( ip ):
 
     n = len(ip)
@@ -124,7 +116,10 @@ def split( ip ):
         ret_val = ret_val + i.split(';') #splits on basis of ;
 
     return ret_val
-
+	
+#removes comments
+#input: A string, the program itself
+#output: A string, with the comments removed
 def remove_comments( ip ):
     n = len(ip)
     i = 0
@@ -163,34 +158,22 @@ def remove_comments( ip ):
             commfree = commfree + ip[i]
             i += 1
     return commfree
-
-#userInput = sys.stdin.readlines()
-#print(remove_comments(userInput))
-
-# input:   a string containing a single statement, with the ending ; and : removed
-# returns: a list removing all white spaces, grouping all sets of only numbers together, grouping alphabets-number combinations, grouping various
-#          operator combos together, and taking any other character like ( on its own
+#converts the input string into lexemes
+#input:   a string containing a single statement, with the ending ; and : removed
+#output: a list removing all white spaces, grouping all sets of only numbers together, grouping alphabets-number combinations, grouping various
+# operator combos together, and taking any other character like ( on its own
 def lexemize(statement):
     return re.findall("\s*(\w+|[\+-/\*%\^<>=!:\.]+|.)",statement)
 
-# input:   a list of lexemes corresponding to a statement
-# returns: a list of all symbols that don't form valid operators
+#Checks if any of the input lexemes are not valid operators	
+#input:   a list of lexemes corresponding to a statement
+#output: a list of all symbols that don't form valid operators
 def validate_ops(lexd_stmt) :
-    #i = 0
-    #invalid_ops = []
-    #for line_op in lexd_stmt:
-    #    i+= 1
-    #    j = 1
-    #    for op in line_op:
-    #        if (op not in op_list and op not in spec_sym_list and not re.match("^[\w_]*$", op)):
-    #            invalid_ops += [(op,i,j)]
-    #        j += len(op)
-    #return invalid_ops
-    return [op for op in lexd_stmt if (op not in op_list and op not in spec_sym_list and not re.match("^[\w_]*$", op))]
+	return [op for op in lexd_stmt if (op not in op_list and op not in spec_sym_list and not re.match("^[\w_]*$", op))]
 
-
-# input:   a list of lexemes corresponding to a statement
-# returns: a list of all identifiers that are not valid
+#Checks if any of the input lexemes are not valid identifiers
+#input:   a list of lexemes corresponding to a statement
+#output: a list of all identifiers that are not valid
 def validate_ids(lexd_stmt) :
     inv_id = []
     n = len(lexd_stmt)
@@ -207,6 +190,8 @@ def validate_ids(lexd_stmt) :
     return inv_id
     
 #function to compare two lists	
+#input: two lists
+#output: True or False
 def comp ( a,b ):
 	if len(a) != len(b):
 		return False
@@ -216,6 +201,8 @@ def comp ( a,b ):
 	return True
 	
 #Function to check if input list is a valid variable declaration
+#input: list of list containing lexemes
+#output: True or False
 def isVardecl(input):
 	if input[0] in dt_list and validate_ids(input[1]) == [] and input[2] == '=' :
 		return True
@@ -264,7 +251,7 @@ def isValidStatementBlock(input):
     return True
 
 #Function to check if input 'if's are valid
-#Input: list of lexems that start with an if and end with an endif
+#Input: list of lexemes that start with an if and end with an endif
 #Output: True if the input is lexically valid, False otherwise
 def isValidIfStatement(input):
     body = []
@@ -302,6 +289,8 @@ def isValidIfStatement(input):
     return True                  
 	    
 #Function to check if input list is a valid function call
+#input: list of list containing lexemes
+#output: True or False
 def isFuncCall(input):
     if validate_ids(input[0]) == [] and input[1] == ["."] and validate_ids(input[2]) == [] and input[3] == ['('] and input[-1] == [')']:
         if(isValidArgList(input[4:-1])):
@@ -337,8 +326,10 @@ def verify_global(ip):
 		i = i+1
 	return True
 
+	
+#main function	
 if __name__ == "__main__":
-    filename = raw_input("Enter a file name: ")
+    filename = input("Enter a file name: ")
     f = open(filename, 'r')
     code = f.read()
     cfree = remove_comments(code)
@@ -357,17 +348,15 @@ if __name__ == "__main__":
             lex += lexemize(i)
             lex_str += str(lexemize(i))[1:-1]
             lex_str += ", "
-    print(lex_str)[:-2]
+    print(lex_str[:-2])
     print('')
     print('')
     print('           Lexemes by Category')
-    print('           -------')
+    print('           -------------------')
     print('')
 
     token_count(lex)       
-    #print(lex)
-    #print(len(lex))
-
+    
     inv_op = validate_ops(lex)
     if len(inv_op) > 0:
         print('Invalid ops detected: ' + str(inv_op)[1:-1])
