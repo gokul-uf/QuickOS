@@ -2,7 +2,7 @@ README
 ======
 <note>Please do!! :) </note>
 
-The code to be run is lexer.py.
+The code to be run is lexer.py
 once started, this will ask for test input file name.
 
 * Give one of the file name mentioned in the "Input Test Files" section
@@ -13,13 +13,17 @@ once started, this will ask for test input file name.
 	$ Whether any Invalid operators are detected
 	$ Whether any Invalid identifiers are detected
 	
+Code Status
+===========
+Complete 
+
 Input Test Files
 ================
 There are five test files in total provided with the code. 
 The input test files are present in the same directory as the code.
 
-Files:
-------
+Files
+-----
 	* test_ip_1
 	* test_ip_2
 	* test_ip_3
@@ -60,7 +64,3 @@ Lexical rules
 <bool_exp> -> <bool_exp> or <bool_exp_and> | <bool_exp_and>
 <bool_exp_and> -> <bool_exp_and> and <bool_exp_not> | <bool_exp_not>
 <bool_exp_not> -> not <bool_exp_not> | id | <boolliteral>
-
-Code Status
-===========
-Complete 

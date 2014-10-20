@@ -261,10 +261,32 @@ def isValidLogicalExpr(input):
     return True
 
 #Function to check if input is a valid statement block
-#Input: list of statements
+#Input: list of list of lexemes
 #Output: True if the statement block is lexically valid, False otherwise
+''' 
+	Types of statements
+		* Assignment
+		* function call
+		* If blocks
+'''
+
 def isValidStatementBlock(input):
-    return True
+    for i in input:
+        if isValidAssign(i):
+            continue
+        elif isFuncCall(i):
+            continue
+        elif i[0] == 'if':
+            for j in range (i,len(input)):
+                if j[0] == 'endif':
+                    break
+            if j == len(input):
+                return False
+            else:
+                return isValidIfStament(input[i,j+1])
+        else:
+            return False
+        return True
 
 #Function to check if input 'if's are valid
 #Input: list of lexemes that start with an if and end with an endif
