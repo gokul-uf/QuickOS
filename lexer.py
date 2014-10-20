@@ -57,7 +57,7 @@ def isValidAssign(input):
             return True
         elif isValidArith(input[2:]):
             return True
-    print("Invalid assignment statement: " + " ".join(input))
+    #print("Invalid assignment statement: " + " ".join(input))
     return False
 
 
@@ -85,7 +85,7 @@ def token_count (input):
 
 #function to split input on basis of newline and ; delimiter
 #input: A string, the program without comments
-#output: list of lists with lexemes in each line and statement
+#output: list of strings with lexemes in each line and statement
 def split( ip ):
 
     n = len(ip)
@@ -376,7 +376,7 @@ def isFuncCall(input):
 #input: A list of list of lexemes, one list per lexemes of each line
 #output: True/False
 def verify_global(ip):
-	global_header = ["define","global","(",")"]
+	global_header = ["define","global"]
 	if comp(global_header,ip[0]) == False:	
 		return False
 	i = 1
@@ -389,7 +389,7 @@ def verify_global(ip):
 	
 #main function	
 if __name__ == "__main__":
-    filename = input("Enter a file name: ")
+    filename = raw_input("Enter a file name: ")
     f = open(filename, 'r')
     code = f.read()
     cfree = remove_comments(code)
@@ -429,4 +429,34 @@ if __name__ == "__main__":
     else:
         print('All identifiers are valid')
 
+    lex = []
+    if sp[0] == "define global":
+        for i in sp:
+            lex += [lexemize(i)]
+        if not verify_global(lex):
+            print("Error in Global Declaration")
+        else:
+            print("Global Declaration valid")
+  
+    lex = []
+    schedule = False
+    
+    for i in sp:
+        if i == "define scheduler(process_list procs):":
+            schedule = True
+            continue
+        if schedule == True:
+            if i == "enddef":
+                break
+            lex += [lexemize(i)]
+    isValidStatementBlock(lex)
 
+    for i in sp:
+        if i == "define mmu(process proc):":
+            schedule = True
+            continue
+        if schedule == True:
+            if i == "enddef":
+                break
+            lex += [lexemize(i)]
+    isValidStatementBlock(lex)
